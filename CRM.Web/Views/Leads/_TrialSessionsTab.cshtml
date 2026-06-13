@@ -1,0 +1,106 @@
+@model IEnumerable<CRM.Domain.Entities.TrialSession>
+@using CRM.Domain.Enums
+@using System.Globalization
+@{
+    // Cairo timezone (UTC+3)
+    var cairoOffset = TimeSpan.FromHours(3);
+    var statusOptions = new[] { TrialSessionStatus.Scheduled, TrialSessionStatus.Attended, TrialSessionStatus.Missed, TrialSessionStatus.Cancelled, TrialSessionStatus.Rescheduled };
+}
+<div class="card profile-card p-4">
+    <h5 class="mb-3">Trial Sessions</h5>
+    <form id="bulkAttendanceForm" method="post" asp-action="UpdateBulkAttendance" asp-controller="Trial">
+        <input type="hidden" name="leadId" value="@ViewBag.LeadId" />
+        <table class="table table-hover table-dark table-striped text-secondary small">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAll" /></th>
+                    <th>Teacher</th>
+                    <th>Scheduled At (Cairo)</th>
+                    <th>Subject</th>
+                    <th>Status</th>
+                    <th>Notes</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var session in Model)
+                {
+                    var localDt = session.ScheduledAt.Add(cairoOffset);
+                    <tr>
+                        <td><input type="checkbox" name="sessionIds" value="@session.Id" class="session-checkbox" /></td>
+                        <td>@session.Teacher?.FullName</td>
+                        <td>@localDt.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@session.Subject</td>
+                        <td><span class="badge bg-secondary bg-opacity-25 text-light">@session.Status</span></td>
+                        <td>@session.Notes</td>
+                        <td>
+                            <select name="status_@session.Id" class="form-select form-select-sm" style="width:auto; display:inline-block;">
+                                @foreach (var opt in statusOptions)
+                                {
+                                    <option value="@opt" @(opt == session.Status ? "selected" : "")>@opt</option>
+                                }
+                            </select>
+                            <button type="button" class="btn btn-sm btn-primary ms-1 update-single" data-session-id="@session.Id">Update</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="d-flex align-items-center mt-3">
+            <select name="bulkStatus" class="form-select w-auto me-2" required>
+                <option value="" disabled selected>Set status for selected</option>
+                @foreach (var opt in statusOptions)
+                {
+                    <option value="@opt">@opt</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-success">Apply to Selected</button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script>
+        document.getElementById('selectAll')?.addEventListener('change', function (e) {
+            var checked = e.target.checked;
+            document.querySelectorAll('.session-checkbox').forEach(cb => cb.checked = checked);
+        });
+        // Single update via AJAX
+        document.querySelectorAll('.update-single').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                var sessionId = this.dataset.sessionId;
+                var select = this.parentElement.querySelector(`select[name='status_${sessionId}']`);
+                var newStatus = select.value;
+                const formData = new FormData();
+                formData.append('sessionId', sessionId);
+                formData.append('status', newStatus);
+                const res = await fetch('@Url.Action("Attendance", "Trial")', {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                });
+                const json = await res.json();
+                if (json.success) {
+                    location.reload();
+                } else {
+                    alert(json.message);
+                }
+            });
+        });
+        // Bulk form submission via AJAX
+        document.getElementById('bulkAttendanceForm')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const res = await fetch('@Url.Action("UpdateBulkAttendance", "Trial")', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            });
+            const json = await res.json();
+            if (json.success) {
+                location.reload();
+            } else {
+                alert(json.message);
+            }
+        });
+    </script>
+}

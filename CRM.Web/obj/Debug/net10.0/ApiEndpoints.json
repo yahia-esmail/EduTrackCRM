@@ -1,0 +1,60 @@
+[
+  {
+    "ContainingType": "CRM.Web.Controllers.Api.LeadsApiController",
+    "Method": "MetaWebhook",
+    "RelativePath": "api/v1/leads/webhook/meta",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CRM.Application.DTOs.MetaLeadWebhookModel",
+        "IsRequired": true
+      },
+      {
+        "Name": "X-Hub-Signature-256",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CRM.Web.Controllers.Api.LeadsApiController",
+    "Method": "TikTokWebhook",
+    "RelativePath": "api/v1/leads/webhook/tiktok",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CRM.Application.DTOs.TikTokLeadWebhookModel",
+        "IsRequired": true
+      },
+      {
+        "Name": "X-TikTok-Signature",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CRM.Web.Controllers.Api.LeadsApiController",
+    "Method": "WebsiteLead",
+    "RelativePath": "api/v1/leads/website",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "CRM.Application.DTOs.LeadDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

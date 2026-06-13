@@ -1,0 +1,83 @@
+@model CRM.Application.DTOs.TrialSessionCreateDto
+@using Microsoft.AspNetCore.Identity
+@using CRM.Domain.Enums
+@using CRM.Infrastructure.Data
+@inject UserManager<AppUser> UserManager
+@inject CRM.Infrastructure.Data.AppDbContext DbContext
+
+<div class="modal fade" id="trialBookingModal" tabindex="-1" aria-labelledby="trialBookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content bg-dark text-light border border-secondary">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="trialBookingModalLabel">Book Trial Session</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="trialBookingForm" method="post" asp-action="Book" asp-controller="Trial">
+          <input type="hidden" asp-for="LeadId" />
+          <div class="mb-3">
+            <label class="form-label">Teacher</label>
+            <select class="form-select" asp-for="TeacherId" required>
+              <option value="">Select a teacher</option>
+              @foreach (var t in ViewBag.Teachers as IEnumerable<dynamic>) {
+                  <option value="@t.Id">@t.FullName</option>
+              }
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Scheduled At</label>
+            <input type="text" class="form-control" id="scheduledAt" name="ScheduledAt" placeholder="Select date & time" required />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Subject</label>
+            <input type="text" class="form-control" asp-for="Subject" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Level</label>
+            <input type="text" class="form-control" asp-for="Level" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Notes (plain text)</label>
+            <textarea class="form-control" asp-for="Notes" rows="3"></textarea>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary">Book</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section Scripts {
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      flatpickr('#scheduledAt', { enableTime: true, dateFormat: "Y-m-d H:i" });
+
+      const form = document.getElementById('trialBookingForm');
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const response = await fetch('@Url.Action("Book", "Trial")', {
+          method: 'POST',
+          body: formData,
+          headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        });
+        const result = await response.json();
+        if (result.success) {
+          // close modal and trigger UI refresh (optional custom event)
+          var modalEl = document.getElementById('trialBookingModal');
+          var modal = bootstrap.Modal.getInstance(modalEl);
+          modal.hide();
+          // fire custom event for parent page to reload trial list
+          document.dispatchEvent(new CustomEvent('trialBooked', { detail: result }));
+        } else {
+          alert(result.message || 'Failed to book trial session');
+        }
+      });
+    });
+  </script>
+}

@@ -1,0 +1,56 @@
+@page "/student/{studentId:guid}"
+@using CRM.Application.DTOs
+@using CRM.Application.Interfaces
+@inject IStudentService StudentService
+@inject NavigationManager NavManager
+
+<h3>Student Profile</h3>
+
+@if (student == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="nav nav-tabs" id="studentTab" role="tablist">
+        <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab" aria-controls="overview" aria-selected="true">Overview</button>
+        <button class="nav-link" id="sessions-tab" data-bs-toggle="tab" data-bs-target="#sessions" type="button" role="tab" aria-controls="sessions" aria-selected="false">Sessions</button>
+        <button class="nav-link" id="status-history-tab" data-bs-toggle="tab" data-bs-target="#status-history" type="button" role="tab" aria-controls="status-history" aria-selected="false">Status History</button>
+        <button class="nav-link" id="stop-history-tab" data-bs-toggle="tab" data-bs-target="#stop-history" type="button" role="tab" aria-controls="stop-history" aria-selected="false">Stop History</button>
+    </div>
+    <div class="tab-content" id="studentTabContent" style="margin-top:1rem;">
+        <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+            <h4>Basic Info</h4>
+            <dl class="row">
+                <dt class="col-sm-3">Name</dt><dd class="col-sm-9">@student.Name</dd>
+                <dt class="col-sm-3">Subject</dt><dd class="col-sm-9">@student.Subject</dd>
+                <dt class="col-sm-3">Level</dt><dd class="col-sm-9">@student.CurrentLevel</dd>
+                <dt class="col-sm-3">Teacher</dt><dd class="col-sm-9">@student.TeacherName</dd>
+                <dt class="col-sm-3">Weekly Sessions</dt><dd class="col-sm-9">@student.WeeklySessions</dd>
+                <dt class="col-sm-3">Start Date</dt><dd class="col-sm-9">@student.StartDate.ToString("yyyy-MM-dd")</dd>
+            </dl>
+            <StudentStatusSelector StudentId="studentId" CurrentStatus="student.Status" />
+        </div>
+        <div class="tab-pane fade" id="sessions" role="tabpanel" aria-labelledby="sessions-tab">
+            <p>Sessions UI goes here.</p>
+        </div>
+        <div class="tab-pane fade" id="status-history" role="tabpanel" aria-labelledby="status-history-tab">
+            <p>Status history timeline component placeholder.</p>
+        </div>
+        <div class="tab-pane fade" id="stop-history" role="tabpanel" aria-labelledby="stop-history-tab">
+            <p>Stop reason details placeholder.</p>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Guid studentId { get; set; }
+
+    private StudentDto? student;
+
+    protected override async Task OnInitializedAsync()
+    {
+        student = await StudentService.GetStudentAsync(studentId);
+    }
+}

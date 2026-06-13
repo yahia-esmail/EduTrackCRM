@@ -1,0 +1,152 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\Projects\\EduTrackCRM\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{73ADCA0E-1E34-9A8A-E0F0-E87F967FD802}|CRM.Application\\CRM.Application.csproj|f:\\projects\\edutrackcrm\\crm.application\\dtos\\studentstatusupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73ADCA0E-1E34-9A8A-E0F0-E87F967FD802}|CRM.Application\\CRM.Application.csproj|solutionrelative:crm.application\\dtos\\studentstatusupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73ADCA0E-1E34-9A8A-E0F0-E87F967FD802}|CRM.Application\\CRM.Application.csproj|f:\\projects\\edutrackcrm\\crm.application\\services\\studentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73ADCA0E-1E34-9A8A-E0F0-E87F967FD802}|CRM.Application\\CRM.Application.csproj|solutionrelative:crm.application\\services\\studentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{73ADCA0E-1E34-9A8A-E0F0-E87F967FD802}|CRM.Application\\CRM.Application.csproj|f:\\projects\\edutrackcrm\\crm.application\\interfaces\\istudentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{73ADCA0E-1E34-9A8A-E0F0-E87F967FD802}|CRM.Application\\CRM.Application.csproj|solutionrelative:crm.application\\interfaces\\istudentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{158BDAD4-A5A3-89AE-081F-CBF4E6888E38}|CRM.Web\\CRM.Web.csproj|f:\\projects\\edutrackcrm\\crm.web\\views\\leads\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{158BDAD4-A5A3-89AE-081F-CBF4E6888E38}|CRM.Web\\CRM.Web.csproj|solutionrelative:crm.web\\views\\leads\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{158BDAD4-A5A3-89AE-081F-CBF4E6888E38}|CRM.Web\\CRM.Web.csproj|f:\\projects\\edutrackcrm\\crm.web\\views\\leads\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{158BDAD4-A5A3-89AE-081F-CBF4E6888E38}|CRM.Web\\CRM.Web.csproj|solutionrelative:crm.web\\views\\leads\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{158BDAD4-A5A3-89AE-081F-CBF4E6888E38}|CRM.Web\\CRM.Web.csproj|f:\\projects\\edutrackcrm\\crm.web\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{158BDAD4-A5A3-89AE-081F-CBF4E6888E38}|CRM.Web\\CRM.Web.csproj|solutionrelative:crm.web\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{158BDAD4-A5A3-89AE-081F-CBF4E6888E38}|CRM.Web\\CRM.Web.csproj|f:\\projects\\edutrackcrm\\crm.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{158BDAD4-A5A3-89AE-081F-CBF4E6888E38}|CRM.Web\\CRM.Web.csproj|solutionrelative:crm.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8B6983B9-A8ED-E7CA-70E6-CB5657ECB2CA}|CRM.Infrastructure\\CRM.Infrastructure.csproj|f:\\projects\\edutrackcrm\\crm.infrastructure\\services\\trialsessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8B6983B9-A8ED-E7CA-70E6-CB5657ECB2CA}|CRM.Infrastructure\\CRM.Infrastructure.csproj|solutionrelative:crm.infrastructure\\services\\trialsessionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "StudentService.cs",
+              "DocumentMoniker": "F:\\Projects\\EduTrackCRM\\CRM.Application\\Services\\StudentService.cs",
+              "RelativeDocumentMoniker": "CRM.Application\\Services\\StudentService.cs",
+              "ToolTip": "F:\\Projects\\EduTrackCRM\\CRM.Application\\Services\\StudentService.cs",
+              "RelativeToolTip": "CRM.Application\\Services\\StudentService.cs",
+              "ViewState": "AgIAAIMAAAAAAAAAAAAtwJQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T13:04:40.977Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "IStudentService.cs",
+              "DocumentMoniker": "F:\\Projects\\EduTrackCRM\\CRM.Application\\Interfaces\\IStudentService.cs",
+              "RelativeDocumentMoniker": "CRM.Application\\Interfaces\\IStudentService.cs",
+              "ToolTip": "F:\\Projects\\EduTrackCRM\\CRM.Application\\Interfaces\\IStudentService.cs",
+              "RelativeToolTip": "CRM.Application\\Interfaces\\IStudentService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T13:04:35.108Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "StudentStatusUpdateDto.cs",
+              "DocumentMoniker": "F:\\Projects\\EduTrackCRM\\CRM.Application\\DTOs\\StudentStatusUpdateDto.cs",
+              "RelativeDocumentMoniker": "CRM.Application\\DTOs\\StudentStatusUpdateDto.cs",
+              "ToolTip": "F:\\Projects\\EduTrackCRM\\CRM.Application\\DTOs\\StudentStatusUpdateDto.cs",
+              "RelativeToolTip": "CRM.Application\\DTOs\\StudentStatusUpdateDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAawAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T13:04:32.374Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "F:\\Projects\\EduTrackCRM\\CRM.Web\\Views\\Leads\\Index.cshtml",
+              "RelativeDocumentMoniker": "CRM.Web\\Views\\Leads\\Index.cshtml",
+              "ToolTip": "F:\\Projects\\EduTrackCRM\\CRM.Web\\Views\\Leads\\Index.cshtml",
+              "RelativeToolTip": "CRM.Web\\Views\\Leads\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-12T12:15:13.913Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Profile.cshtml",
+              "DocumentMoniker": "F:\\Projects\\EduTrackCRM\\CRM.Web\\Views\\Leads\\Profile.cshtml",
+              "RelativeDocumentMoniker": "CRM.Web\\Views\\Leads\\Profile.cshtml",
+              "ToolTip": "F:\\Projects\\EduTrackCRM\\CRM.Web\\Views\\Leads\\Profile.cshtml",
+              "RelativeToolTip": "CRM.Web\\Views\\Leads\\Profile.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-12T12:15:13.061Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "F:\\Projects\\EduTrackCRM\\CRM.Web\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "CRM.Web\\Views\\Account\\Login.cshtml",
+              "ToolTip": "F:\\Projects\\EduTrackCRM\\CRM.Web\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "CRM.Web\\Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAAJUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-06-12T12:15:02.062Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "F:\\Projects\\EduTrackCRM\\CRM.Web\\appsettings.json",
+              "RelativeDocumentMoniker": "CRM.Web\\appsettings.json",
+              "ToolTip": "F:\\Projects\\EduTrackCRM\\CRM.Web\\appsettings.json",
+              "RelativeToolTip": "CRM.Web\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-06-12T12:14:27.912Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TrialSessionService.cs",
+              "DocumentMoniker": "F:\\Projects\\EduTrackCRM\\CRM.Infrastructure\\Services\\TrialSessionService.cs",
+              "RelativeDocumentMoniker": "CRM.Infrastructure\\Services\\TrialSessionService.cs",
+              "ToolTip": "F:\\Projects\\EduTrackCRM\\CRM.Infrastructure\\Services\\TrialSessionService.cs",
+              "RelativeToolTip": "CRM.Infrastructure\\Services\\TrialSessionService.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAawH8AAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T12:11:13.096Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

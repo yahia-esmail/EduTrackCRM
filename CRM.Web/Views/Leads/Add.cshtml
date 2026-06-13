@@ -1,0 +1,164 @@
+@model CRM.Web.Models.CreateLeadViewModel
+@using CRM.Domain.Enums
+@{
+    ViewData["Title"] = "Add Lead";
+}
+
+<style>
+    .page-title {
+        font-weight: 700;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .form-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #cbd5e1;
+    }
+
+    .form-control, .form-select {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #f8f9fa;
+        border-radius: 8px;
+        padding: 0.6rem 0.85rem;
+    }
+
+    .form-control:focus, .form-select:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        color: #f8f9fa;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        border: none;
+        border-radius: 8px;
+        padding: 0.7rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-submit:hover {
+        background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    }
+</style>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title mb-0">Add New Lead</h2>
+        <a asp-action="Import" class="btn btn-outline-light btn-sm border-secondary"><i class="bi bi-file-earmark-excel"></i> Import Excel</a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success bg-success-subtle border-0 text-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card form-card text-light p-4">
+        <form asp-action="Add" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <h5 class="mb-4 border-bottom border-secondary pb-2" style="color: #6366f1;">Lead Details</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label asp-for="Name" class="form-label">Full Name</label>
+                    <input asp-for="Name" class="form-control" placeholder="Student or Parent Name" required />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Phone" class="form-label">Phone Number</label>
+                    <input asp-for="Phone" class="form-control" placeholder="e.g. +1234567890" required />
+                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Email" class="form-label">Email Address</label>
+                    <input asp-for="Email" class="form-control" placeholder="name@domain.com" required />
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <h5 class="mb-4 border-bottom border-secondary pb-2" style="color: #6366f1;">Location & Student profile</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <label asp-for="Country" class="form-label">Country</label>
+                    <input asp-for="Country" class="form-control" placeholder="e.g. United Kingdom" required />
+                    <span asp-validation-for="Country" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="City" class="form-label">City</label>
+                    <input asp-for="City" class="form-control" placeholder="e.g. London" required />
+                    <span asp-validation-for="City" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Language" class="form-label">Language</label>
+                    <input asp-for="Language" class="form-control" placeholder="e.g. English" required />
+                    <span asp-validation-for="Language" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="StudentAge" class="form-label">Student Age</label>
+                    <input asp-for="StudentAge" type="number" class="form-control" placeholder="e.g. 12" />
+                    <span asp-validation-for="StudentAge" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="GuardianName" class="form-label">Guardian Name (Optional)</label>
+                    <input asp-for="GuardianName" class="form-control" placeholder="e.g. Jane Doe" />
+                    <span asp-validation-for="GuardianName" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="Subject" class="form-label">Subject</label>
+                    <input asp-for="Subject" class="form-control" placeholder="e.g. Algebra" required />
+                    <span asp-validation-for="Subject" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="CurrentLevel" class="form-label">Current Level</label>
+                    <input asp-for="CurrentLevel" class="form-control" placeholder="e.g. Intermediate" required />
+                    <span asp-validation-for="CurrentLevel" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <h5 class="mb-4 border-bottom border-secondary pb-2" style="color: #6366f1;">Campaign & Source Details</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-3">
+                    <label asp-for="Source" class="form-label">Lead Source</label>
+                    <select asp-for="Source" class="form-select" asp-items="Html.GetEnumSelectList<LeadSource>()"></select>
+                    <span asp-validation-for="Source" class="text-danger small"></span>
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="CampaignName" class="form-label">Campaign Name</label>
+                    <input asp-for="CampaignName" class="form-control" placeholder="e.g. Summer Special" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="AdSetName" class="form-label">Ad Set Name</label>
+                    <input asp-for="AdSetName" class="form-control" placeholder="e.g. Math Lovers UK" />
+                </div>
+                <div class="col-md-3">
+                    <label asp-for="AdName" class="form-label">Ad Name</label>
+                    <input asp-for="AdName" class="form-control" placeholder="e.g. Ad_01_Video" />
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary btn-submit px-5 text-white">Save Lead</button>
+            </div>
+        </form>
+    </div>
+</div>

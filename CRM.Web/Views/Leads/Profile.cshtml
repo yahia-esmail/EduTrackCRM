@@ -1,0 +1,275 @@
+@model CRM.Domain.Entities.Lead
+@using CRM.Domain.Enums
+@{
+    ViewData["Title"] = $"{Model.Name} - Profile";
+    var timeline = (List<CRM.Domain.Entities.LeadActivity>)ViewBag.Timeline;
+    var assignmentLogs = (List<CRM.Domain.Entities.LeadAssignmentLog>)ViewBag.AssignmentLogs;
+    var agents = (List<CRM.Domain.Entities.AppUser>)ViewBag.Agents;
+}
+
+<style>
+    .page-title {
+        font-weight: 700;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .profile-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        color: #f8f9fa;
+    }
+
+    .nav-tabs {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-tabs .nav-link {
+        color: #94a3b8;
+        border: none;
+        font-weight: 500;
+        font-size: 0.9rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #6366f1;
+        background: transparent;
+        border-bottom: 2px solid #6366f1;
+    }
+
+    .timeline-item {
+        position: relative;
+        padding-left: 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: 0.75rem;
+        top: 0.25rem;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #6366f1;
+        border: 2px solid #1e1b4b;
+        z-index: 2;
+    }
+
+    .timeline-item::after {
+        content: "";
+        position: absolute;
+        left: 1.05rem;
+        top: 1rem;
+        width: 2px;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.08);
+        z-index: 1;
+    }
+
+    .timeline-item:last-child::after {
+        display: none;
+    }
+
+    .form-select, .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #f8f9fa;
+        border-radius: 8px;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title mb-0">Lead Profile: @Model.Name</h2>
+        <a asp-action="Index" class="btn btn-outline-light btn-sm border-secondary">Back to List</a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success bg-success-subtle border-0 text-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row g-4">
+        <!-- Sidebar Info -->
+        <div class="col-md-4">
+            <div class="card profile-card p-4">
+                <div class="text-center mb-4">
+                    <div class="rounded-circle bg-secondary bg-opacity-25 d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <span class="fs-1 text-light">@Model.Name.Substring(0, 1)</span>
+                    </div>
+                    <h4>@Model.Name</h4>
+                    <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 px-3 py-2 mt-2">@Model.Stage</span>
+                </div>
+
+                <hr class="border-secondary" />
+
+                <div class="mb-3">
+                    <span class="text-secondary small d-block">Phone Number</span>
+                    <strong>@Model.Phone</strong>
+                </div>
+                <div class="mb-3">
+                    <span class="text-secondary small d-block">Email Address</span>
+                    <strong>@Model.Email</strong>
+                </div>
+                <div class="mb-3">
+                    <span class="text-secondary small d-block">Country / City</span>
+                    <strong>@Model.Country, @Model.City</strong>
+                </div>
+                <div class="mb-3">
+                    <span class="text-secondary small d-block">Subject / Level</span>
+                    <strong>@Model.Subject (@Model.CurrentLevel)</strong>
+                </div>
+                <div class="mb-3">
+                    <span class="text-secondary small d-block">Student Age / Guardian</span>
+                    <strong>@Model.StudentAge years / @(string.IsNullOrEmpty(Model.GuardianName) ? "None" : Model.GuardianName)</strong>
+                </div>
+                <div class="mb-3">
+                    <span class="text-secondary small d-block">Assigned Agent</span>
+                    <strong>@(Model.AssignedUser?.FullName ?? "Unassigned")</strong>
+                </div>
+
+                <hr class="border-secondary" />
+
+                <!-- Quick Actions: Stage Change & Reassignment -->
+                <div class="mb-4">
+                    <form asp-action="UpdateStage" method="post" class="mb-3">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <label class="form-label text-secondary small">Change Pipeline Stage</label>
+                        <div class="input-group">
+                            <select name="stage" class="form-select" asp-items="Html.GetEnumSelectList<LeadStage>()"></select>
+                            <button type="submit" class="btn btn-primary text-white">Update</button>
+                        </div>
+                    </form>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("TeamLeader"))
+                    {
+                        <form asp-action="AssignAgent" method="post">
+                            <input type="hidden" name="id" value="@Model.Id" />
+                            <label class="form-label text-secondary small">Reassign Lead Owner</label>
+                            <div class="input-group">
+                                <select name="agentId" class="form-select">
+                                    <option value="">Unassigned</option>
+                                    @foreach (var agent in agents)
+                                    {
+                                        <option value="@agent.Id">@agent.FullName</option>
+                                    }
+                                </select>
+                                <button type="submit" class="btn btn-secondary border-0">Assign</button>
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Workspace (Tabs) -->
+        <div class="col-md-8">
+            <div class="card profile-card p-4">
+                <nav class="nav nav-tabs mb-4" id="profileTab" role="tablist">
+                    <button class="nav-link active" id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">Campaign Info</button>
+                    <button class="nav-link" id="timeline-tab" data-bs-toggle="tab" data-bs-target="#timeline" type="button" role="tab">Activity Timeline</button>
+                    <button class="nav-link" id="assignment-tab" data-bs-toggle="tab" data-bs-target="#assignment" type="button" role="tab">Assignment Logs</button>
+                </nav>
+
+                <div class="tab-content" id="profileTabContent">
+                    <!-- Overview (Campaign Details) -->
+                    <div class="tab-pane fade show active" id="overview" role="tabpanel">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <span class="text-secondary small d-block">Lead Source</span>
+                                <h5><span class="badge bg-secondary bg-opacity-25 text-white">@Model.Source</span></h5>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="text-secondary small d-block">Intake Timestamp</span>
+                                <h5>@Model.EntryTimestamp.ToString("F")</h5>
+                            </div>
+                            <hr class="border-secondary my-3" />
+                            <div class="col-md-4">
+                                <span class="text-secondary small d-block">Campaign Name</span>
+                                <h6 class="text-light">@(string.IsNullOrEmpty(Model.CampaignName) ? "N/A" : Model.CampaignName)</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="text-secondary small d-block">Ad Set Name</span>
+                                <h6 class="text-light">@(string.IsNullOrEmpty(Model.AdSetName) ? "N/A" : Model.AdSetName)</h6>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="text-secondary small d-block">Ad Name</span>
+                                <h6 class="text-light">@(string.IsNullOrEmpty(Model.AdName) ? "N/A" : Model.AdName)</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div class="tab-pane fade" id="timeline" role="tabpanel">
+                        @if (timeline != null && timeline.Any())
+                        {
+                            <div class="timeline-container px-2">
+                                @foreach (var act in timeline)
+                                {
+                                    <div class="timeline-item">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <strong class="text-info">@act.ActorName</strong>
+                                            <span class="text-secondary small">@act.Timestamp.ToString("g")</span>
+                                        </div>
+                                        <p class="mb-0 text-light small">@act.Description</p>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-center py-4 text-secondary">
+                                <i class="bi bi-clock-history fs-2"></i>
+                                <p class="mt-2">No activity has been logged on this timeline yet.</p>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Assignment Logs -->
+                    <div class="tab-pane fade" id="assignment" role="tabpanel">
+                        @if (assignmentLogs != null && assignmentLogs.Any())
+                        {
+                            <table class="table table-hover table-dark table-striped text-secondary small">
+                                <thead>
+                                    <tr>
+                                        <th>From Owner</th>
+                                        <th>To Owner</th>
+                                        <th>Assigned By</th>
+                                        <th>Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var log in assignmentLogs)
+                                    {
+                                        <tr>
+                                            <td>@(log.FromUser?.FullName ?? "Unassigned")</td>
+                                            <td>@(log.ToUser?.FullName ?? "Unassigned")</td>
+                                            <td>@log.AssignedByUsername</td>
+                                            <td>@log.Timestamp.ToString("g")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="text-center py-4 text-secondary">
+                                <i class="bi bi-person-badge fs-2"></i>
+                                <p class="mt-2">No reassignment history recorded for this lead.</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,144 @@
+@{
+    ViewData["Title"] = "Import Leads";
+}
+
+<style>
+    .page-title {
+        font-weight: 700;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .import-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .file-dropzone {
+        border: 2px dashed rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 3rem 2rem;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.01);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .file-dropzone:hover {
+        border-color: #6366f1;
+        background: rgba(99, 102, 241, 0.03);
+    }
+
+    .form-control-file {
+        display: none;
+    }
+
+    .stats-card {
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .stats-val {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title mb-0">Import Leads from Excel</h2>
+        <a asp-action="DownloadTemplate" class="btn btn-outline-light btn-sm border-secondary">
+            <i class="bi bi-download"></i> Download Template
+        </a>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-5">
+            <div class="card import-card text-light p-4 mb-4">
+                <form asp-action="Import" method="post" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="excelFile" class="file-dropzone w-100 d-block">
+                            <i class="bi bi-file-earmark-excel fs-1 text-secondary mb-3 d-block"></i>
+                            <span class="d-block mb-2">Click to select lead list Excel file (.xlsx)</span>
+                            <span class="text-secondary small">Make sure columns match the template</span>
+                            <input id="excelFile" type="file" name="file" class="form-control-file" accept=".xlsx" required onchange="updateFileName(this)" />
+                        </label>
+                        <div id="file-name" class="text-center mt-2 text-info small"></div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 btn-submit text-white font-weight-bold">
+                        <i class="bi bi-cloud-arrow-up"></i> Upload and Import
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            @if (ViewBag.SuccessCount != null)
+            {
+                <div class="card import-card text-light p-4 mb-4">
+                    <h5 class="mb-4" style="color: #6366f1;">Import Summary</h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="stats-card bg-success bg-opacity-10 border border-success text-success">
+                                <h6>Imported</h6>
+                                <div class="stats-val">@ViewBag.SuccessCount</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stats-card bg-warning bg-opacity-10 border border-warning text-warning">
+                                <h6>Duplicates</h6>
+                                <div class="stats-val">@ViewBag.DuplicateCount</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stats-card bg-danger bg-opacity-10 border border-danger text-danger">
+                                <h6>Errors</h6>
+                                <div class="stats-val">@ViewBag.ErrorCount</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (ViewBag.ErrorsList != null && ((List<string>)ViewBag.ErrorsList).Any())
+                    {
+                        <h6 class="text-danger mb-2">Detailed Import Error Log:</h6>
+                        <div class="p-3 bg-dark bg-opacity-50 rounded text-danger-emphasis border border-danger border-opacity-25" style="max-height: 250px; overflow-y: auto;">
+                            <ul class="mb-0 list-unstyled small">
+                                @foreach (var error in (List<string>)ViewBag.ErrorsList)
+                                {
+                                    <li class="mb-1">⚠️ @error</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="card import-card text-light p-4 text-center py-5">
+                    <i class="bi bi-info-circle text-secondary fs-2 mb-3"></i>
+                    <h5>Excel Import Instructions</h5>
+                    <p class="text-secondary small max-width-500 mx-auto">
+                        Download our pre-formatted spreadsheet template. Populate it with your offline leads. Upload the completed sheet to parse coordinates, clean numbers automatically, and detect duplicates.
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateFileName(input) {
+        var nameSpan = document.getElementById('file-name');
+        if (input.files && input.files.length > 0) {
+            nameSpan.textContent = "Selected: " + input.files[0].name;
+        } else {
+            nameSpan.textContent = "";
+        }
+    }
+</script>

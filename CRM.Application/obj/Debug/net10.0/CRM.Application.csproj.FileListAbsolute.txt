@@ -1,0 +1,15 @@
+F:\Projects\EduTrackCRM\CRM.Application\bin\Debug\net10.0\CRM.Application.deps.json
+F:\Projects\EduTrackCRM\CRM.Application\bin\Debug\net10.0\CRM.Application.dll
+F:\Projects\EduTrackCRM\CRM.Application\bin\Debug\net10.0\CRM.Application.pdb
+F:\Projects\EduTrackCRM\CRM.Application\bin\Debug\net10.0\CRM.Domain.dll
+F:\Projects\EduTrackCRM\CRM.Application\bin\Debug\net10.0\CRM.Domain.pdb
+F:\Projects\EduTrackCRM\CRM.Application\obj\Debug\net10.0\CRM.Application.csproj.AssemblyReference.cache
+F:\Projects\EduTrackCRM\CRM.Application\obj\Debug\net10.0\CRM.Application.GeneratedMSBuildEditorConfig.editorconfig
+F:\Projects\EduTrackCRM\CRM.Application\obj\Debug\net10.0\CRM.Application.AssemblyInfoInputs.cache
+F:\Projects\EduTrackCRM\CRM.Application\obj\Debug\net10.0\CRM.Application.AssemblyInfo.cs
+F:\Projects\EduTrackCRM\CRM.Application\obj\Debug\net10.0\CRM.Application.csproj.CoreCompileInputs.cache
+F:\Projects\EduTrackCRM\CRM.Application\obj\Debug\net10.0\CRM.Appl.F64C2975.Up2Date
+F:\Projects\EduTrackCRM\CRM.Application\obj\Debug\net10.0\CRM.Application.dll
+F:\Projects\EduTrackCRM\CRM.Application\obj\Debug\net10.0\refint\CRM.Application.dll
+F:\Projects\EduTrackCRM\CRM.Application\obj\Debug\net10.0\CRM.Application.pdb
+F:\Projects\EduTrackCRM\CRM.Application\obj\Debug\net10.0\ref\CRM.Application.dll

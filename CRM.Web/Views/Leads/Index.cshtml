@@ -1,0 +1,233 @@
+@model IEnumerable<CRM.Domain.Entities.Lead>
+@using CRM.Domain.Enums
+@{
+    ViewData["Title"] = "Leads Dashboard";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" />
+
+<style>
+    .page-title {
+        font-weight: 700;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .table-card {
+        background: rgba(255, 255, 255, 0.02);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        color: #f8f9fa;
+    }
+
+    .dataTables_wrapper .dataTables_length, 
+    .dataTables_wrapper .dataTables_filter, 
+    .dataTables_wrapper .dataTables_info, 
+    .dataTables_wrapper .dataTables_processing, 
+    .dataTables_wrapper .dataTables_paginate {
+        color: #94a3b8 !important;
+        margin-bottom: 1rem;
+    }
+
+    .table {
+        color: #cbd5e1 !important;
+    }
+
+    .table thead th {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: #94a3b8;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .table tbody td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+        vertical-align: middle;
+    }
+
+    /* Urgency Color codes based on stage categories */
+    .row-urgent {
+        background: rgba(239, 68, 68, 0.08) !important; /* Lost or No Answer red tint */
+    }
+    .row-trial {
+        background: rgba(16, 185, 129, 0.08) !important; /* Trial scheduled/attended green tint */
+    }
+    .row-interested {
+        background: rgba(245, 158, 11, 0.08) !important; /* Callback/details requested yellow tint */
+    }
+
+    .btn-action {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #f8f9fa;
+        border-radius: 6px;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-action:hover {
+        background: #6366f1;
+        border-color: #6366f1;
+    }
+
+    .form-control, .form-select {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .form-control:focus, .form-select:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        color: #f8f9fa;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title mb-0">Leads Pipeline</h2>
+        <a asp-action="Add" class="btn btn-primary btn-submit text-white px-4">
+            <i class="bi bi-plus-lg"></i> Add Lead
+        </a>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="card table-card p-4 mb-4">
+        <form method="get" asp-action="Index">
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label class="form-label text-secondary small">Pipeline Stage</label>
+                    <select name="stage" class="form-select">
+                        <option value="">All Stages</option>
+                        @foreach (var stage in ViewBag.Stages)
+                        {
+                            <option value="@stage">@stage</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label text-secondary small">Country</label>
+                    <select name="country" class="form-select">
+                        <option value="">All Countries</option>
+                        @foreach (var country in ViewBag.Countries)
+                        {
+                            <option value="@country">@country</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label text-secondary small">Assigned Agent</label>
+                    <select name="agentId" class="form-select">
+                        <option value="">All Agents</option>
+                        @foreach (var agent in ViewBag.Agents)
+                        {
+                            <option value="@agent.Id">@agent.FullName</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label text-secondary small">Source</label>
+                    <select name="source" class="form-select">
+                        <option value="">All Sources</option>
+                        @foreach (var src in ViewBag.Sources)
+                        {
+                            <option value="@src">@src</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label text-secondary small">Global Search</label>
+                    <input name="search" type="text" class="form-control" placeholder="Name, Phone, or Email" />
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button type="submit" class="btn btn-outline-light w-100 border-secondary py-2">Filter</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Leads Table -->
+    <div class="card table-card p-4">
+        <table id="leadsTable" class="table table-hover w-100">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Country</th>
+                    <th>Source</th>
+                    <th>Stage</th>
+                    <th>Assigned Agent</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var lead in Model)
+                {
+                    // Class mapping based on stage urgency
+                    string urgencyClass = "";
+                    if (lead.Stage == LeadStage.NoAnswer || lead.Stage == LeadStage.LostLead || lead.Stage == LeadStage.WrongNumber)
+                    {
+                        urgencyClass = "row-urgent";
+                    }
+                    else if (lead.Stage == LeadStage.TrialScheduled || lead.Stage == LeadStage.TrialAttended || lead.Stage == LeadStage.Subscribed)
+                    {
+                        urgencyClass = "row-trial";
+                    }
+                    else if (lead.Stage == LeadStage.RequestedCallback || lead.Stage == LeadStage.Interested)
+                    {
+                        urgencyClass = "row-interested";
+                    }
+
+                    <tr class="@urgencyClass">
+                        <td><strong>@lead.Name</strong></td>
+                        <td>@lead.Phone</td>
+                        <td>@lead.Country</td>
+                        <td>
+                            <span class="badge bg-secondary bg-opacity-25 text-white">@lead.Source</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25">@lead.Stage</span>
+                        </td>
+                        <td>
+                            @(lead.AssignedUser?.FullName ?? "Unassigned")
+                        </td>
+                        <td>@lead.CreatedAt.ToString("g")</td>
+                        <td>
+                            <a asp-action="Profile" asp-route-id="@lead.Id" class="btn btn-action">View Profile</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#leadsTable').DataTable({
+            responsive: true,
+            order: [[6, 'desc']], // Order by Created At
+            pageLength: 25,
+            lengthMenu: [10, 25, 50, 100],
+            language: {
+                searchPlaceholder: "Search within list...",
+                search: ""
+            }
+        });
+        $('.dataTables_filter input').addClass('form-control form-control-sm');
+    });
+</script>
