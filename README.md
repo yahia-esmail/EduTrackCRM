@@ -5,8 +5,7 @@
 [![Entity Framework](https://img.shields.io/badge/EF%20Core-9-green)](https://docs.microsoft.com/ef/)
 [![License](https://img.shields.io/badge/License-Proprietary-blue)](LICENSE)
 
-> نظام CRM متكامل لإدارة أكاديميات التعليم عن بعد - من جلب العميل المحتمل إلى استمرارية الطالب
-
+A full-featured CRM system designed for an online education academy. The system manages the complete lifecycle from lead capture (via ads, social media, and web forms) through customer service, trial sessions, student enrollment, and ongoing student retention.
 ---
 
 ## 📋 Table of Contents
@@ -253,30 +252,6 @@
 | TikTok Leads | TikTok Lead Generation API | ✅ Webhook ready |
 
 ---
-
-## 🚦 Getting Started
-
-### Prerequisites
-- [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- [SQL Server 2022](https://www.microsoft.com/sql-server) or higher
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (optional)
-- [Node.js](https://nodejs.org/) (for frontend assets)
-
-### Quick Start with Docker (Recommended)
-
-```bash
-# Clone the repository
-git clone https://github.com/yahia-esmail/EduTrackCRM.git
-cd EduTrackCRM
-
-# Start with Docker Compose
-docker-compose up -d
-
-# Apply migrations
-dotnet ef database update --project CRM.Infrastructure --startup-project CRM.Web
-
-# Run the application
-dotnet run --project CRM.Web
 
 
 
